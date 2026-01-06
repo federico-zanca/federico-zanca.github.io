@@ -1,0 +1,32 @@
+baseURL = "https://federico_zanca.github.io/" # <--- UPDATE THIS
+languageCode = "en-us"
+title = "My Blog"
+theme = "blowfish"
+
+[params]
+    colorScheme = "blowfish"
+    defaultTheme = "dark"
+  
+    # Profile / Homepage Setup
+    [params.home.profile]
+        enable = true
+        name = "amuro"
+        bio = "Cose buffe"
+        avatar = "profile.jpg" # Put this image in the /static/ folder!
+        buttons = [
+            { name = "Posts", url = "posts", icon = "pen" },
+            { name = "GitHub", url = "https://github.com/federico_zanca", icon = "github" }
+        ]
+
+    # Article Settings
+    [params.article]
+        showTableOfContents = true
+        showDate = true
+        showAuthor = false
+
+    # Developer Tools
+    [params.copy]
+        enable = true # Copy button for code blocks
+  
+    [markup.goldmark.renderer]
+        unsafe = true # Required for Mermaid diagrams
