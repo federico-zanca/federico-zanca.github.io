@@ -1,0 +1,62 @@
+[ember]
+accent = '#ff9f68'
+accent_soft = '#493027'
+bg = '#211b1d'
+surface = '#2b2225'
+text = '#f4e8e4'
+muted = '#c4aaa3'
+rule = '#6b4e4a'
+
+[forest]
+accent = '#9bc78c'
+accent_soft = '#263b2c'
+bg = '#18221b'
+surface = '#1f2c23'
+text = '#e4eee0'
+muted = '#b0c1ac'
+rule = '#4c6650'
+
+[ocean]
+accent = '#70c7e8'
+accent_soft = '#203b4a'
+bg = '#142128'
+surface = '#1b2b34'
+text = '#e0edf2'
+muted = '#a8bec8'
+rule = '#456471'
+
+[amber]
+accent = '#f2c66d'
+accent_soft = '#45391f'
+bg = '#242017'
+surface = '#2e281d'
+text = '#f2ead9'
+muted = '#c8bda4'
+rule = '#706044'
+
+[crimson]
+accent = '#ee7e8b'
+accent_soft = '#48262d'
+bg = '#25191d'
+surface = '#302024'
+text = '#f3e3e5'
+muted = '#c9aeb2'
+rule = '#70464e'
+
+[ice]
+accent = '#9fcee8'
+accent_soft = '#2a3a48'
+bg = '#1b2027'
+surface = '#242b34'
+text = '#e4ebf1'
+muted = '#b2bdc8'
+rule = '#536272'
+
+[orchid]
+accent = '#e2a6e8'
+accent_soft = '#412d47'
+bg = '#251d29'
+surface = '#302437'
+text = '#f1e5f1'
+muted = '#c6afc8'
+rule = '#69516d'

@@ -1,14 +1,18 @@
 {{ define "main" }}
 <main id="main" class="about-page about-profile">
   <section class="about-intro" aria-labelledby="about-name">
-    {{ with .Params.photo }}{{ if and (ne .enabled false) .src }}
-      <img class="about-photo" src="{{ partial "url.html" .src }}" alt="{{ .alt | default "" }}" width="96" height="96">
-    {{ end }}{{ end }}
-    <h1 id="about-name">{{ .Params.name | default .Title }}</h1>
-    <div class="about-bio">{{ .Content }}</div>
-    {{ with .Params.socials }}<ul class="about-socials" aria-label="Social and contact links">
-      {{ range . }}{{ if and (ne .enabled false) .url }}<li><a href="{{ partial "url.html" .url }}">{{ with .icon }}{{ $icon := printf "icons/%s.svg" . }}{{ if fileExists (printf "static/%s" $icon) }}<img class="icon" src="{{ $icon | relURL }}" alt="" width="18" height="18">{{ end }}{{ end }}{{ .label }}</a></li>{{ end }}{{ end }}
-    </ul>{{ end }}
+    <aside class="about-aside">
+      {{ with .Params.photo }}{{ if and (ne .enabled false) .src }}
+        <img class="about-photo" src="{{ partial "url.html" .src }}" alt="{{ .alt | default "" }}" width="128" height="128">
+      {{ end }}{{ end }}
+      {{ with .Params.socials }}<ul class="about-socials" aria-label="Social and contact links">
+        {{ range . }}{{ if and (ne .enabled false) .url }}<li><a href="{{ partial "url.html" .url }}">{{ with .icon }}{{ $icon := printf "icons/%s.svg" . }}{{ if fileExists (printf "static/%s" $icon) }}<img class="icon" src="{{ $icon | relURL }}" alt="" width="18" height="18">{{ end }}{{ end }}{{ .label }}</a></li>{{ end }}{{ end }}
+      </ul>{{ end }}
+    </aside>
+    <div class="about-content">
+      <h1 id="about-name">{{ .Params.name | default .Title }}</h1>
+      <div class="about-bio">{{ .Content }}</div>
+    </div>
   </section>
   {{ range .Params.sections }}
     {{ $items := where (.items | default slice) "enabled" "ne" false }}
