@@ -1,0 +1,20 @@
+[editorial]
+body = 'Georgia, "Times New Roman", serif'
+heading = 'Georgia, "Times New Roman", serif'
+ui = 'ui-monospace, "SFMono-Regular", Consolas, monospace'
+code = 'ui-monospace, "SFMono-Regular", Consolas, monospace'
+[technical]
+body = 'system-ui, -apple-system, "Segoe UI", sans-serif'
+heading = 'system-ui, -apple-system, "Segoe UI", sans-serif'
+ui = 'ui-monospace, "SFMono-Regular", Consolas, monospace'
+code = 'ui-monospace, "SFMono-Regular", Consolas, monospace'
+[mono]
+body = 'ui-monospace, "SFMono-Regular", Consolas, monospace'
+heading = 'ui-monospace, "SFMono-Regular", Consolas, monospace'
+ui = 'ui-monospace, "SFMono-Regular", Consolas, monospace'
+code = 'ui-monospace, "SFMono-Regular", Consolas, monospace'
+[folio]
+body = 'system-ui, -apple-system, "Segoe UI", sans-serif'
+heading = 'Georgia, "Times New Roman", serif'
+ui = 'system-ui, -apple-system, "Segoe UI", sans-serif'
+code = 'ui-monospace, "SFMono-Regular", Consolas, monospace'

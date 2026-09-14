@@ -1,0 +1,21 @@
+[violet]
+accent = '#c3a0ee'
+accent_soft = '#302b3a'
+[blue]
+accent = '#91b8ef'
+accent_soft = '#25313e'
+[copper]
+accent = '#dbab88'
+accent_soft = '#382e29'
+[teal]
+accent = '#88c2b9'
+accent_soft = '#253531'
+[olive]
+accent = '#b4bf8c'
+accent_soft = '#303329'
+[rose]
+accent = '#df9da9'
+accent_soft = '#392b30'
+[monochrome]
+accent = '#c6ccd5'
+accent_soft = '#303237'

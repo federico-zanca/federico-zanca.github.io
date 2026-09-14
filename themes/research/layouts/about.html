@@ -1,0 +1,33 @@
+{{ define "main" }}
+<main id="main" class="about-page about-profile">
+  <section class="about-intro" aria-labelledby="about-name">
+    {{ with .Params.photo }}{{ if and (ne .enabled false) .src }}
+      <img class="about-photo" src="{{ partial "url.html" .src }}" alt="{{ .alt | default "" }}" width="96" height="96">
+    {{ end }}{{ end }}
+    <h1 id="about-name">{{ .Params.name | default .Title }}</h1>
+    <div class="about-bio">{{ .Content }}</div>
+    {{ with .Params.socials }}<ul class="about-socials" aria-label="Social and contact links">
+      {{ range . }}{{ if and (ne .enabled false) .url }}<li><a href="{{ partial "url.html" .url }}">{{ with .icon }}{{ $icon := printf "icons/%s.svg" . }}{{ if fileExists (printf "static/%s" $icon) }}<img class="icon" src="{{ $icon | relURL }}" alt="" width="18" height="18">{{ end }}{{ end }}{{ .label }}</a></li>{{ end }}{{ end }}
+    </ul>{{ end }}
+  </section>
+  {{ range .Params.sections }}
+    {{ $items := where (.items | default slice) "enabled" "ne" false }}
+    {{ if and (ne .enabled false) (gt (len $items) 0) }}
+    <section class="about-section" aria-labelledby="{{ .id | default (.title | anchorize) }}">
+      <h2 id="{{ .id | default (.title | anchorize) }}">{{ .title }}</h2>
+      <ul class="about-entries">
+        {{ range $items }}<li class="about-entry">
+          <div class="about-entry-text"><h3>{{ .title }}</h3>
+          {{ with .meta }}<p class="about-entry-meta">{{ . }}</p>{{ end }}
+          {{ with .description }}<div class="about-description">{{ . | markdownify }}</div>{{ end }}</div>
+          {{ if or .date .links }}<div class="about-entry-aside">
+            {{ with .date }}<span class="about-date">{{ . }}</span>{{ end }}
+            {{ with .links }}<ul class="about-entry-links">{{ range . }}{{ if .url }}<li><a href="{{ partial "url.html" .url }}">{{ .label }}</a></li>{{ end }}{{ end }}</ul>{{ end }}
+          </div>{{ end }}
+        </li>{{ end }}
+      </ul>
+    </section>
+    {{ end }}
+  {{ end }}
+</main>
+{{ end }}

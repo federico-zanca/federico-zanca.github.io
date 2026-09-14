@@ -1,0 +1,1 @@
+{{ $href := .Destination }}{{ if and (strings.HasPrefix $href "/") (not (strings.HasPrefix $href "//")) }}{{ $href = strings.TrimPrefix "/" $href | relURL }}{{ end }}<a href="{{ $href | safeURL }}"{{ with .Title }} title="{{ . }}"{{ end }}>{{ .Text | safeHTML }}</a>

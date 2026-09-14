@@ -1,0 +1,5 @@
+{{ $src := .Get "src" }}{{ with .Page.Resources.GetMatch $src }}{{ $src = .RelPermalink }}{{ else }}{{ $src = partial "url.html" $src }}{{ end }}
+<figure{{ if eq (.Get "side") "true" }} class="side-caption"{{ end }}>
+  <a href="{{ $src }}"><img src="{{ $src }}" alt="{{ .Get "alt" }}" loading="lazy" decoding="async"></a>
+  {{ with .Get "caption" }}<figcaption>{{ . | markdownify }}</figcaption>{{ end }}
+</figure>

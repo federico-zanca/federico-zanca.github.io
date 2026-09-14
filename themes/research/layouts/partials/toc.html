@@ -1,0 +1,1 @@
+<ol>{{ range .headings }}{{ if .ID }}<li><a href="#{{ .ID }}">{{ .Title | safeHTML }}</a>{{ with .Headings }}{{ partial "toc.html" (dict "headings" .) }}{{ end }}</li>{{ else }}{{ range .Headings }}<li><a href="#{{ .ID }}">{{ .Title | safeHTML }}</a>{{ with .Headings }}{{ partial "toc.html" (dict "headings" .) }}{{ end }}</li>{{ end }}{{ end }}{{ end }}</ol>

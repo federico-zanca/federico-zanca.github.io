@@ -1,0 +1,11 @@
+{{ $result := transform.HighlightCodeBlock . }}
+{{ $collapsed := eq (printf "%v" (.Attributes.collapsed | default false)) "true" }}
+{{ $filename := .Attributes.filename | default (.Type | default "text") }}
+<div class="code-block">
+  <button class="copy-code" type="button" aria-label="Copy {{ $filename }}">Copy</button>
+  <details{{ if not $collapsed }} open{{ end }}>
+    <summary><span class="filename">{{ $filename }}</span><span class="code-meta">{{ len (split (strings.TrimRight "\n" .Inner) "\n") }} lines <span class="when-open">· Collapse</span><span class="when-closed">· Expand</span></span></summary>
+    <div class="code-scroll" tabindex="0" role="region" aria-label="{{ $filename }} code">{{ $result.Wrapped }}</div>
+  </details>
+  <textarea class="copy-source" hidden aria-hidden="true">{{ .Inner }}</textarea>
+</div>

@@ -1,32 +1,36 @@
-baseURL = "https://federico_zanca.github.io/" # <--- UPDATE THIS
-languageCode = "en-us"
-title = "My Blog"
-theme = "blowfish"
+baseURL = 'https://federico-zanca.github.io/'
+locale = 'en-us'
+title = 'Federico Zanca'
+theme = 'research'
+enableRobotsTXT = true
 
 [params]
-    colorScheme = "blowfish"
-    defaultTheme = "dark"
-  
-    # Profile / Homepage Setup
-    [params.home.profile]
-        enable = true
-        name = "amuro"
-        bio = "Cose buffe"
-        avatar = "profile.jpg" # Put this image in the /static/ folder!
-        buttons = [
-            { name = "Posts", url = "posts", icon = "pen" },
-            { name = "GitHub", url = "https://github.com/federico_zanca", icon = "github" }
-        ]
+  description = 'Notes on systems, security, and kernel internals.'
+  article_style = 'reader'
+  palette = 'violet'
+  fonts = 'auto'
+  sidebar = true
+  toc = true
+  numbered = true
 
-    # Article Settings
-    [params.article]
-        showTableOfContents = true
-        showDate = true
-        showAuthor = false
+[taxonomies]
+  tag = 'tags'
+  category = 'categories'
+  series = 'series'
 
-    # Developer Tools
-    [params.copy]
-        enable = true # Copy button for code blocks
-  
-    [markup.goldmark.renderer]
-        unsafe = true # Required for Mermaid diagrams
+[markup.goldmark.renderer]
+  unsafe = false
+[markup.goldmark.parser.attribute]
+  block = true
+[markup.highlight]
+  noClasses = false
+  lineNos = true
+  lineNumbersInTable = false
+  tabWidth = 4
+[markup.tableOfContents]
+  startLevel = 2
+  endLevel = 4
+  ordered = true
+
+[outputs]
+  home = ['HTML', 'RSS']

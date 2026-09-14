@@ -1,0 +1,25 @@
+{{ $content := .Content }}
+{{ $toc := .Fragments.Headings }}
+{{ $hasTOC := and (ne (.Param "toc") false) (gt (len .Fragments.Identifiers) 0) }}
+{{ $rail := and (ne (.Param "sidebar") false) (or $hasTOC .Params.artifacts .Params.related) }}
+<main id="main" class="article-shell{{ if not $rail }} no-sidebar{{ end }}{{ if eq (.Param "numbered") false }} unnumbered{{ end }}">
+  <article class="article">
+    <header class="article-header">
+      <div class="meta"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time><span>{{ .ReadingTime }} min read</span>{{ range .GetTerms "tags" }}<a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>{{ end }}</div>
+      <h1>{{ .Title }}</h1>
+      {{ with .Description }}<p class="deck">{{ . }}</p>{{ end }}
+    </header>
+    {{ if and $rail $hasTOC }}<details class="mobile-toc"><summary>Contents</summary><nav aria-label="Article contents">{{ partial "toc.html" (dict "headings" $toc) }}</nav></details>{{ end }}
+    <div class="prose">{{ $content }}</div>
+    {{ partial "series.html" . }}
+  </article>
+  {{ if $rail }}
+  <aside class="article-rail" aria-label="Article resources">
+    <div class="rail-inner">
+      {{ if $hasTOC }}<nav class="desktop-toc" aria-label="Article contents"><h2 class="rail-label">Contents</h2>{{ partial "toc.html" (dict "headings" $toc) }}</nav>{{ end }}
+      {{ with .Params.artifacts }}<section class="resource-list"><h2>Artifacts</h2><ul>{{ range . }}<li><a href="{{ partial "url.html" .url }}">{{ partial "icon.html" "file" }}<span>{{ .label }}</span></a></li>{{ end }}</ul></section>{{ end }}
+      {{ with .Params.related }}<section class="resource-list"><h2>Related</h2><ul>{{ range . }}<li><a href="{{ partial "url.html" .url }}">{{ partial "icon.html" "arrow-square-out" }}<span>{{ .title }}</span></a></li>{{ end }}</ul></section>{{ end }}
+    </div>
+  </aside>
+  {{ end }}
+</main>

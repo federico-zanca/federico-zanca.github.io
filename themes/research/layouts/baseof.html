@@ -1,0 +1,38 @@
+{{- $style := .Param "article_style" | default "reader" -}}
+{{- if in (slice "reader" "ledger") .Layout }}{{ $style = .Layout }}{{ end -}}
+{{- if not (in (slice "reader" "ledger") $style) }}{{ errorf "Unknown article_style %q in %s" $style .Path }}{{ end -}}
+{{- $palette := .Param "palette" | default "violet" -}}
+{{- $colors := index hugo.Data.research.palettes $palette -}}
+{{- if not $colors }}{{ errorf "Unknown palette %q in %s" $palette .Path }}{{ end -}}
+{{- $font := .Param "fonts" | default "auto" -}}
+{{- if eq $font "auto" }}{{ $font = cond (eq $style "reader") "editorial" "technical" }}{{ end -}}
+{{- $fonts := index hugo.Data.research.fonts $font -}}
+{{- if not $fonts }}{{ errorf "Unknown fonts preset %q in %s" $font .Path }}{{ end -}}
+<!doctype html>
+<html lang="{{ site.Language.Locale }}" data-style="{{ $style }}" data-palette="{{ $palette }}" data-fonts="{{ $font }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="{{ .Description | default site.Params.description }}">
+  <title>{{ if not .IsHome }}{{ .Title }} · {{ end }}{{ site.Title }}</title>
+  <link rel="canonical" href="{{ .Permalink }}">
+  {{ with site.Home.OutputFormats.Get "RSS" }}<link rel="alternate" type="application/rss+xml" href="{{ .RelPermalink }}" title="{{ site.Title }}">{{ end }}
+  {{ $css := resources.Get "css/research.css" | minify | fingerprint }}
+  <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
+  <style>:root[data-style] { {{ range $key, $value := $colors }}{{ printf "--%s: %s;" (replace $key "_" "-") $value | safeCSS }}{{ end }}{{ range $key, $value := $fonts }}{{ printf "--font-%s: %s;" $key $value | safeCSS }}{{ end }} }</style>
+  {{ with resources.Get "css/custom.css" }}{{ $custom := . | minify | fingerprint }}<link rel="stylesheet" href="{{ $custom.RelPermalink }}">{{ end }}
+</head>
+<body{{ if eq .Layout "about" }} class="about-site"{{ end }}>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <a class="identity" href="{{ site.Home.RelPermalink }}">{{ site.Title }}</a>
+    <nav aria-label="Main navigation"><a href="{{ site.Home.RelPermalink }}">Home</a><a href="{{ "archives/" | relURL }}">Archives</a><a href="{{ "about/" | relURL }}"{{ if eq .Layout "about" }} aria-current="page"{{ end }}>About</a></nav>
+  </header>
+  {{ block "main" . }}{{ end }}
+  <footer class="site-footer"><span>{{ site.Title }}</span><a href="{{ "index.xml" | relURL }}">RSS</a></footer>
+  <p class="sr-only" id="copy-status" aria-live="polite"></p>
+  {{ $js := resources.Get "js/research.js" | minify | fingerprint }}
+  <script src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}" defer></script>
+</body>
+</html>

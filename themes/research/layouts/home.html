@@ -1,0 +1,1 @@
+{{ define "main" }}<main id="main" class="index-page"><h1>{{ site.Title }}</h1><div class="prose">{{ .Content }}</div><h2>Writing</h2>{{ partial "post-list.html" (where site.RegularPages "Section" "posts") }}</main>{{ end }}

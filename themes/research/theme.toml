@@ -1,0 +1,6 @@
+name = 'Research'
+license = 'MIT'
+description = 'Two restrained dark Hugo layouts for long technical articles.'
+min_version = '0.147.9'
+[author]
+  name = 'Research theme contributors'

@@ -1,0 +1,8 @@
+{{ if and .Params.series_nav .Params.series }}
+  {{ $current := . }}{{ $name := index .Params.series 0 }}
+  {{ $pages := where (where site.RegularPages "Params.series" "intersect" (slice $name)) "Params.series_order" "ne" nil }}
+  {{ $pages = sort $pages "Params.series_order" }}
+  {{ $previous := false }}{{ $next := false }}
+  {{ range $i, $p := $pages }}{{ if eq $p.RelPermalink $current.RelPermalink }}{{ if gt $i 0 }}{{ $previous = index $pages (sub $i 1) }}{{ end }}{{ if lt (add $i 1) (len $pages) }}{{ $next = index $pages (add $i 1) }}{{ end }}{{ end }}{{ end }}
+  {{ if or $previous $next }}<nav class="series-nav" aria-label="Series navigation">{{ with $previous }}<a rel="prev" href="{{ .RelPermalink }}"><span>Previous in series</span>{{ .Title }}</a>{{ else }}<span></span>{{ end }}{{ with $next }}<a rel="next" href="{{ .RelPermalink }}"><span>Next in series</span>{{ .Title }}</a>{{ end }}</nav>{{ end }}
+{{ end }}
