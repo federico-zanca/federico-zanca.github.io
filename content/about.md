@@ -3,7 +3,7 @@ title: About
 layout: about
 name: Federico Zanca
 fonts: folio
-palette: 'ember'
+palette: 'ice'
 photo:
     enabled: true
     src: /images/profile.jpg

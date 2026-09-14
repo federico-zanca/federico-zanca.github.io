@@ -7,7 +7,7 @@ enableRobotsTXT = true
 [params]
   description = 'Notes on systems, security, and kernel internals.'
   article_style = 'reader'
-  palette = 'violet'
+  palette = 'ice'
   fonts = 'auto'
   sidebar = true
   toc = true
