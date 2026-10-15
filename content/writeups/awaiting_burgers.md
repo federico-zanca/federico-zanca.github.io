@@ -395,10 +395,6 @@ must eventually destroy, `ready_` contains work that can run now, and
 `timers_` contains work waiting for a kitchen time. The ready queue and timer
 entries are copies of handles, not copies of the order or recipe.
 
-For one unmodified ticket, the handle takes this route through the kitchen:
-
-{{< figure src="/images/awaiting_burgers/kitchen-scheduler.svg" width="820" alt="A ticket coroutine waits for confirmation, enters the scheduler's ready queue, resumes on a kitchen update, waits on a grilling timer, then resumes and finishes on a later update" >}}
-
 Each call to `Scheduler::next()` first looks for a ready handle. If there is
 none, it advances the logical kitchen clock to the earliest timer and moves
 **all** timers due at that time into the ready queue. It then removes one

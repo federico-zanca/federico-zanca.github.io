@@ -8,7 +8,7 @@ enableRobotsTXT = true
   header_name = 'amuro'
   description = 'Notes on systems, security, and kernel internals.'
   # Select the forge theme colors; see README.md for all palettes.
-  forge_palette = 'mono'
+  forge_palette = 'cinder'
   # These options apply to the original research theme only.
   article_style = 'reader'
 #palette = 'ember'
