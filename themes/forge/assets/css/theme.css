@@ -162,7 +162,6 @@
   --panel: #151518;
   --panel-raised: #242428;
   --text: #e9e7e7;
-  --strong: #ffd2d1;
   --muted: #aaa5a6;
   --line: #4d484a;
   --accent: #f0e9e9;
@@ -180,7 +179,6 @@
   --panel: #191516;
   --panel-raised: #2b2224;
   --text: #f0e8e8;
-  --strong: #ffd1d2;
   --muted: #b9a9aa;
   --line: #594547;
   --accent: #e76570;
@@ -198,7 +196,6 @@
   --panel: #1d1416;
   --panel-raised: #302124;
   --text: #efe6e5;
-  --strong: #f3cfce;
   --muted: #b9a3a3;
   --line: #61474a;
   --accent: #d97982;
@@ -355,7 +352,7 @@ h3 { margin-top: 25px; font-size: 1.05rem; }
 .prose h4 { color: var(--link); font-size: .95rem; }
 .prose h4::before { content: '#### '; }
 .prose p { margin: 0 0 1.35em; }
-.prose strong, .prose b { color: var(--strong, var(--text)); }
+.prose strong, .prose b { color: var(--link); }
 .prose ul, .prose ol { padding-left: 25px; }
 .prose blockquote { border-left: 2px solid var(--line); padding-left: 16px; margin-left: 0; color: var(--muted); }
 .prose table { display: block; max-width: 100%; overflow: auto; border-collapse: collapse; margin: 20px 0; }
