@@ -22,8 +22,10 @@ The `forge` navigation shows `./blog`, which opens the combined archive at
 - `cinder-ice`: blue charcoal, ice blue, amber
 - `cinder-petrol`: deep teal, sea glass, apricot
 - `paper`: warm cream, brick red, dark teal
+- `paper-dark`: warm charcoal, brick red, teal
 - `wine`: burgundy, gold, mint
 - `mono`: grayscale, red, navy
+- `mono-dark`: near-black, red, blue
 - `rust`: dark terracotta, mint, apricot
 - `noir`: black and white with red links
 - `noir-crimson`: charcoal, soft crimson, rose

@@ -24,43 +24,6 @@ document.querySelectorAll('.copy-code').forEach(button => {
   });
 });
 
-const paletteSelect = document.querySelector('#palette-select');
-const root = document.documentElement;
-const defaultPalette = root.dataset.forgeDefaultPalette || root.dataset.forgePalette;
-const storageKey = 'federico-forge-palette';
-let savedPalette = null;
-
-try {
-  savedPalette = window.localStorage.getItem(storageKey);
-} catch {}
-
-if (savedPalette) root.dataset.forgePalette = savedPalette;
-
-if (paletteSelect) {
-  const availablePalettes = new Set([...paletteSelect.options].map(option => option.value));
-  if (savedPalette && availablePalettes.has(savedPalette)) paletteSelect.value = savedPalette;
-  else {
-    paletteSelect.value = 'default';
-    if (savedPalette) {
-      root.dataset.forgePalette = defaultPalette;
-      try {
-        window.localStorage.removeItem(storageKey);
-      } catch {}
-    }
-  }
-
-  const applyPalette = value => {
-    root.dataset.forgePalette = value === 'default' ? defaultPalette : value;
-    paletteSelect.value = value;
-    try {
-      if (value === 'default') window.localStorage.removeItem(storageKey);
-      else window.localStorage.setItem(storageKey, value);
-    } catch {}
-  };
-
-  paletteSelect.addEventListener('change', () => applyPalette(paletteSelect.value));
-}
-
 const siteSearchInput = document.querySelector('#site-search-input');
 const siteSearchResults = document.querySelector('#site-search-results');
 if (siteSearchInput && siteSearchResults) {

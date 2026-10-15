@@ -1,7 +1,7 @@
 {{ $title := .Title }}
 {{ if not $title }}{{ with .Fragments.Headings }}{{ $title = (index . 0).Title | plainify }}{{ end }}{{ end }}
-{{ $palette := site.Params.forge_palette | default "mono" }}
-{{ if not (in (slice "cinder" "cinder-rust" "cinder-ice" "cinder-petrol" "paper" "mono" "wine" "rust" "noir" "noir-crimson" "noir-oxblood" "graphite") $palette) }}{{ errorf "Unknown forge_palette %q" $palette }}{{ end }}
+{{ $palette := site.Params.forge_palette | default "cinder" }}
+{{ if not (in (slice "cinder" "cinder-rust" "cinder-ice" "cinder-petrol" "paper" "paper-dark" "mono" "mono-dark" "wine" "rust" "noir" "noir-crimson" "noir-oxblood" "graphite") $palette) }}{{ errorf "Unknown forge_palette %q" $palette }}{{ end }}
 {{ $searchItems := slice (dict "title" "Home" "url" site.Home.RelPermalink "kind" "Page") (dict "title" "Blog" "url" ("archives/" | relURL) "kind" "Page") }}
 {{ range site.RegularPages }}
   {{ $page := . }}
@@ -22,7 +22,7 @@
 {{ $writings := where site.RegularPages "Section" "in" (slice "posts" "writeups") }}
 {{ $suggested := sort (where $writings "RelPermalink" "ne" .RelPermalink) "Date" "desc" }}
 <!doctype html>
-<html lang="{{ site.Language.Locale }}" data-forge-palette="{{ $palette }}" data-forge-default-palette="{{ $palette }}">
+<html lang="{{ site.Language.Locale }}" data-forge-palette="{{ $palette }}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
