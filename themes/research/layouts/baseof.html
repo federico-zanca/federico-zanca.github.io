@@ -26,7 +26,7 @@
 <body{{ if eq .Layout "about" }} class="about-site"{{ end }}>
   <a class="skip-link" href="#main">Skip to content</a>
   <header class="site-header">
-    <a class="identity" href="{{ site.Home.RelPermalink }}">{{ site.Title }}</a>
+    <a class="identity" href="{{ site.Home.RelPermalink }}">{{ site.Params.header_name | default site.Title }}</a>
     <nav aria-label="Main navigation"><a href="{{ site.Home.RelPermalink }}">Home</a><a href="{{ "archives/" | relURL }}">Archives</a><a href="{{ "about/" | relURL }}"{{ if eq .Layout "about" }} aria-current="page"{{ end }}>About</a></nav>
   </header>
   {{ block "main" . }}{{ end }}

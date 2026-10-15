@@ -1,0 +1,13 @@
+{{ with . }}
+<section class="profile-links" aria-labelledby="profile-links-title">
+  <h2 id="profile-links-title">Links</h2>
+  <ul>
+    {{ range . }}{{ if and (ne .enabled false) .url }}
+      <li><a href="{{ partial "url.html" .url }}">
+        {{ with .icon }}{{ $icon := printf "icons/%s.svg" . | relURL }}<span class="profile-link-icon" aria-hidden="true" style="--profile-icon: url('{{ $icon }}')"></span>{{ end }}
+        <span>{{ .label }}</span>
+      </a></li>
+    {{ end }}{{ end }}
+  </ul>
+</section>
+{{ end }}

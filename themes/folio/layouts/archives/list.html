@@ -1,0 +1,12 @@
+{{ define "main" }}
+<main id="main" class="page-panel">
+  <h1>Archives</h1>
+  <p class="page-intro">Posts and writeups, together in one place.</p>
+  <div class="archive-controls">
+    <label>Search <input id="archive-search" type="search" placeholder="Search titles" autocomplete="off"></label>
+    <label>Show <select id="archive-kind"><option value="">Everything</option><option value="posts">Posts</option><option value="writeups">Writeups</option></select></label>
+  </div>
+  {{ partial "entries.html" (dict "pages" (where site.RegularPages "Section" "in" (slice "posts" "writeups"))) }}
+  <p id="empty-results" hidden>No matching writing.</p>
+</main>
+{{ end }}

@@ -1,0 +1,51 @@
+{{ $title := .Title }}
+{{ if not $title }}{{ with .Fragments.Headings }}{{ $title = (index . 0).Title | plainify }}{{ end }}{{ end }}
+<!doctype html>
+<html lang="{{ site.Language.Locale }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="description" content="{{ .Description | default site.Params.description }}">
+  <title>{{ if not .IsHome }}{{ $title }} · {{ end }}{{ site.Title }}</title>
+  <link rel="canonical" href="{{ .Permalink }}">
+  {{ with site.Home.OutputFormats.Get "RSS" }}<link rel="alternate" type="application/rss+xml" href="{{ .RelPermalink }}" title="{{ site.Title }}">{{ end }}
+  {{ $css := resources.Get "css/theme.css" | minify | fingerprint }}
+  <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="workspace">
+    <aside class="left-pane" id="site-nav" aria-label="Site navigation">
+      <a class="brand-mark" href="{{ site.Home.RelPermalink }}" aria-label="{{ site.Title }} home">{{ site.Params.header_name | default "FZ" }}</a>
+      <a class="brand-name" href="{{ site.Home.RelPermalink }}">{{ site.Title }}</a>
+      <label class="nav-search-label">Search writing<input id="nav-search" type="search" placeholder="Find a post or writeup…"></label>
+      <nav class="tree-nav" aria-label="Main navigation">
+        <a href="{{ site.Home.RelPermalink }}">Home</a>
+        <a href="{{ "archives/" | relURL }}">Archives</a>
+        <a href="{{ "writeups/" | relURL }}">Writeups</a>
+        <a href="{{ "about/" | relURL }}">About me</a>
+      </nav>
+      <div class="nav-notes">
+        <p class="nav-section-label">Writing</p>
+        {{ range sort (where site.RegularPages "Section" "in" (slice "posts" "writeups")) "Date" "desc" }}
+          {{ $entryTitle := .Title }}
+          {{ if not $entryTitle }}{{ with .Fragments.Headings }}{{ $entryTitle = (index . 0).Title | plainify }}{{ end }}{{ end }}
+          <a class="nav-note" href="{{ .RelPermalink }}">{{ $entryTitle | default .File.BaseFileName }}</a>
+        {{ end }}
+      </div>
+      <a class="nav-rss" href="{{ "index.xml" | relURL }}">RSS feed ↗</a>
+    </aside>
+    <button class="nav-scrim" type="button" aria-label="Close navigation"></button>
+    <div class="workspace-main">
+      <header class="mobile-bar">
+        <button class="menu-toggle" type="button" aria-label="Open navigation" aria-controls="site-nav" aria-expanded="false"><span></span><span></span><span></span></button>
+        <a href="{{ site.Home.RelPermalink }}">{{ site.Title }}</a>
+      </header>
+      {{ block "main" . }}{{ end }}
+    </div>
+  </div>
+  {{ $js := resources.Get "js/theme.js" | minify | fingerprint }}
+  <script src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}" defer></script>
+</body>
+</html>

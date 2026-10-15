@@ -1,0 +1,4 @@
+name = 'Forge'
+license = 'MIT'
+description = 'Compact terminal-style Hugo theme with a cool navy palette.'
+min_version = '0.147.9'

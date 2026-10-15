@@ -1,0 +1,17 @@
+{{ define "main" }}
+<main id="main" class="content-grid">
+  <article class="doc home-doc">
+    <h1>Home</h1>
+    <div class="home-identity">
+      {{ with site.GetPage "/about" }}{{ with .Params.photo }}{{ if and (ne .enabled false) .src }}<img src="{{ partial "url.html" .src }}" alt="{{ .alt | default "Portrait" }}">{{ end }}{{ end }}{{ end }}
+      <div><strong>{{ site.Title }}</strong><span>{{ site.Params.description }}</span></div>
+    </div>
+    <section id="welcome"><h2>Welcome</h2><div class="prose">{{ .Content }}</div></section>
+    {{ with site.GetPage "/about" }}
+    <section id="about-me"><h2>About me</h2><div class="prose">{{ .Content }}</div><p><a href="{{ .RelPermalink }}">More about me →</a></p></section>
+    {{ end }}
+    <section id="recent-writing"><h2>Recent writing</h2>{{ partial "entries.html" (dict "pages" (first 4 (sort (where site.RegularPages "Section" "in" (slice "posts" "writeups")) "Date" "desc"))) }}<p><a href="{{ "archives/" | relURL }}">All writing →</a></p></section>
+  </article>
+  <aside class="right-pane"><h2>On this page</h2><nav aria-label="On this page"><a href="#welcome">Welcome</a><a href="#about-me">About me</a><a href="#recent-writing">Recent writing</a></nav></aside>
+</main>
+{{ end }}

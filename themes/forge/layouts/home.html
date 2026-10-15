@@ -1,0 +1,16 @@
+{{ define "main" }}
+<main id="main" class="home-page">
+  <section class="terminal-panel">
+    <h1>{{ site.Params.header_name | default site.Title }}</h1>
+    <div class="prose">{{ .Content }}</div>
+  </section>
+  {{ $latest := first 3 (sort (where site.RegularPages "Section" "in" (slice "posts" "writeups")) "Date" "desc") }}
+  {{ with $latest }}
+  <section class="terminal-panel latest-panel">
+    <h2>Recent writing</h2>
+    {{ partial "entries.html" (dict "pages" .) }}
+    <p class="all-link"><a href="{{ "archives/" | relURL }}">Browse the blog →</a></p>
+  </section>
+  {{ end }}
+</main>
+{{ end }}

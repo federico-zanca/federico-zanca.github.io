@@ -1,0 +1,20 @@
+{{- $pages := sort .pages "Date" "desc" -}}
+<ul class="entry-list">
+  {{ range $pages }}
+    {{ $title := .Title }}
+    {{ if not $title }}{{ with .Fragments.Headings }}{{ $title = (index . 0).Title | plainify }}{{ end }}{{ end }}
+    {{ if not $title }}{{ $title = .File.BaseFileName }}{{ end }}
+    <li class="entry" data-entry data-section="{{ .Section }}" data-tags="{{ .Params.tags | jsonify }}">
+      <div class="entry-marker" aria-hidden="true"></div>
+      <div class="entry-body">
+        <a class="entry-title" href="{{ .RelPermalink }}">{{ $title }}</a>
+        {{ with .Description }}<p class="entry-description">{{ . }}</p>{{ end }}
+        <div class="entry-meta">
+          <span class="entry-kind">{{ if eq .Section "writeups" }}Writeup{{ else }}Post{{ end }}</span>
+          {{ if gt .Date.Year 1900 }}<time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>{{ end }}
+          {{ range .GetTerms "tags" }}<a class="tag" href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>{{ end }}
+        </div>
+      </div>
+    </li>
+  {{ end }}
+</ul>

@@ -1,0 +1,12 @@
+{{- $src := .Get "src" -}}
+{{- $alt := .Get "alt" -}}
+{{- $thickness := .Get "thickness" | default "2" -}}
+<figure>
+  <span style="position:relative;display:inline-block;max-width:100%;line-height:0">
+    <img src="{{ $src | relURL }}" alt="{{ $alt }}" style="display:block;max-width:100%;height:auto" loading="lazy" decoding="async">
+    {{- range split (.Get "marks") ";" -}}
+      {{- $parts := split . "," -}}
+      <span aria-hidden="true" style="position:absolute;left:{{ index $parts 0 }}%;top:{{ index $parts 1 }}%;width:{{ index $parts 2 }}%;border-bottom:{{ $thickness }}px solid #e53935"></span>
+    {{- end -}}
+  </span>
+</figure>

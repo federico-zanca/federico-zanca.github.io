@@ -1,0 +1,88 @@
+{{ $title := .Title }}
+{{ if not $title }}{{ with .Fragments.Headings }}{{ $title = (index . 0).Title | plainify }}{{ end }}{{ end }}
+{{ $palette := site.Params.forge_palette | default "mono" }}
+{{ if not (in (slice "cinder" "cinder-rust" "cinder-ice" "cinder-petrol" "paper" "mono" "wine" "rust" "noir" "noir-crimson" "noir-oxblood" "graphite") $palette) }}{{ errorf "Unknown forge_palette %q" $palette }}{{ end }}
+{{ $searchItems := slice (dict "title" "Home" "url" site.Home.RelPermalink "kind" "Page") (dict "title" "Blog" "url" ("archives/" | relURL) "kind" "Page") }}
+{{ range site.RegularPages }}
+  {{ $page := . }}
+  {{ $pageTitle := .LinkTitle }}
+  {{ if not $pageTitle }}{{ with .Fragments.Headings }}{{ $pageTitle = (index . 0).Title | plainify | htmlUnescape }}{{ end }}{{ end }}
+  {{ if not $pageTitle }}{{ $pageTitle = .File.BaseFileName | humanize }}{{ end }}
+  {{ $searchItems = $searchItems | append (dict "title" $pageTitle "url" .RelPermalink "kind" "Page" "content" (.Plain | htmlUnescape)) }}
+  {{ range .Fragments.Headings }}
+    {{ $searchItems = $searchItems | append (dict "title" (.Title | plainify | htmlUnescape) "url" (printf "%s#%s" $page.RelPermalink .ID) "kind" "Heading" "page" $pageTitle) }}
+    {{ range .Headings }}
+      {{ $searchItems = $searchItems | append (dict "title" (.Title | plainify | htmlUnescape) "url" (printf "%s#%s" $page.RelPermalink .ID) "kind" "Heading" "page" $pageTitle) }}
+      {{ range .Headings }}
+        {{ $searchItems = $searchItems | append (dict "title" (.Title | plainify | htmlUnescape) "url" (printf "%s#%s" $page.RelPermalink .ID) "kind" "Heading" "page" $pageTitle) }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+{{ $writings := where site.RegularPages "Section" "in" (slice "posts" "writeups") }}
+{{ $suggested := sort (where $writings "RelPermalink" "ne" .RelPermalink) "Date" "desc" }}
+<!doctype html>
+<html lang="{{ site.Language.Locale }}" data-forge-palette="{{ $palette }}" data-forge-default-palette="{{ $palette }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="description" content="{{ .Description | default site.Params.description }}">
+  <title>{{ if not .IsHome }}{{ $title }} · {{ end }}{{ site.Title }}</title>
+  <link rel="canonical" href="{{ .Permalink }}">
+  {{ with site.Home.OutputFormats.Get "RSS" }}<link rel="alternate" type="application/rss+xml" href="{{ .RelPermalink }}" title="{{ site.Title }}">{{ end }}
+  {{ $css := resources.Get "css/theme.css" | minify | fingerprint }}
+  <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="site-layout">
+    <aside class="site-sidebar" id="site-nav" aria-label="Site navigation">
+      <div class="sidebar-intro">
+        <a class="site-logo" href="{{ site.Home.RelPermalink }}"># {{ site.Params.header_name | default site.Title }}</a>
+      </div>
+      <div class="site-search">
+        <label class="sr-only" for="site-search-input">Search pages, headings, and article text</label>
+        <div class="site-search-field">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="m15.5 15.5 5 5"></path></svg>
+          <input id="site-search-input" type="search" placeholder="Search anything..." autocomplete="off" aria-controls="site-search-results">
+        </div>
+        <div id="site-search-results" class="site-search-results" aria-live="polite" hidden></div>
+      </div>
+      <nav class="main-nav" aria-label="Main navigation">
+        <a{{ if .IsHome }} aria-current="page"{{ end }} href="{{ site.Home.RelPermalink }}">Home</a>
+        <a{{ if eq .RelPermalink ("archives/" | relURL) }} aria-current="page"{{ end }} href="{{ "archives/" | relURL }}">Blog</a>
+        <a{{ if eq .Section "about" }} aria-current="page"{{ end }} href="{{ "about/" | relURL }}">About</a>
+      </nav>
+      {{ if gt (len $writings) 1 }}{{ with first 4 $suggested }}
+        <section class="sidebar-posts" aria-label="Suggested posts">
+          <h2>Suggested posts</h2>
+          <ul>
+            {{ range . }}
+              {{ $postTitle := .LinkTitle }}
+              {{ if not $postTitle }}{{ with .Fragments.Headings }}{{ $postTitle = (index . 0).Title | plainify | htmlUnescape }}{{ end }}{{ end }}
+              {{ if not $postTitle }}{{ $postTitle = .File.BaseFileName | humanize }}{{ end }}
+              <li><a href="{{ .RelPermalink }}">{{ $postTitle }}</a></li>
+            {{ end }}
+          </ul>
+        </section>
+      {{ end }}{{ end }}
+      <a class="sidebar-rss" href="{{ "index.xml" | relURL }}" aria-label="RSS feed" title="RSS feed">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="19" r="2"></circle><path d="M3 11a10 10 0 0 1 10 10M3 4a17 17 0 0 1 17 17"></path></svg>
+      </a>
+    </aside>
+    <button class="nav-scrim" type="button" aria-label="Close navigation"></button>
+    <header class="mobile-bar">
+      <button class="menu-toggle" type="button" aria-label="Open navigation" aria-controls="site-nav" aria-expanded="false"><span></span><span></span><span></span></button>
+      <a class="site-logo" href="{{ site.Home.RelPermalink }}"># {{ site.Params.header_name | default site.Title }}</a>
+    </header>
+    <div class="site-frame">
+      {{ block "main" . }}{{ end }}
+      <footer class="site-foot"><span>{{ site.Title }}</span></footer>
+    </div>
+  </div>
+  <script id="site-search-index" type="application/json">{{ $searchItems | jsonify | safeJS }}</script>
+  {{ $js := resources.Get "js/theme.js" | minify | fingerprint }}
+  <script src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}" defer></script>
+</body>
+</html>

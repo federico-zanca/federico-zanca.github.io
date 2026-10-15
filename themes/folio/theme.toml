@@ -1,0 +1,4 @@
+name = 'Folio'
+license = 'MIT'
+description = 'Document-style Hugo theme with a cool paper and teal palette.'
+min_version = '0.147.9'

@@ -1,0 +1,16 @@
+{{ $result := transform.HighlightCodeBlock . }}
+{{ $collapsed := eq (printf "%v" (.Attributes.collapsed | default false)) "true" }}
+{{ $filename := .Attributes.filename | default (.Type | default "text") }}
+{{ $language := lower (.Type | default "text") }}
+{{ $noLineNumbers := in (slice "text" "plain" "plaintext" "txt" "make" "makefile" "console" "output" "diff" "yaml" "yml" "toml" "json" "jsonc" "ini" "csv" "markdown" "md") $language }}
+<div class="code-block{{ if $noLineNumbers }} no-line-numbers{{ end }}">
+  <button class="copy-code" type="button" aria-label="Copy {{ $filename }}" title="Copy code">
+    <svg class="copy-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="13" height="13" rx="2"></rect><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"></path></svg>
+    <svg class="copy-success" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"></path></svg>
+  </button>
+  <details{{ if not $collapsed }} open{{ end }}>
+    <summary><span class="filename">{{ $filename }}</span></summary>
+    <div class="code-scroll" tabindex="0" role="region" aria-label="{{ $filename }} code">{{ $result.Wrapped }}</div>
+  </details>
+  <textarea class="copy-source" hidden aria-hidden="true">{{ .Inner }}</textarea>
+</div>

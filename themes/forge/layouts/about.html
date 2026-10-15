@@ -1,0 +1,27 @@
+{{ define "main" }}
+<main id="main" class="about-grid">
+  <article class="terminal-panel">
+    <h1>{{ .Params.name | default .Title }}</h1>
+    <div class="prose">{{ .Content }}</div>
+    {{ range .Params.sections }}
+      {{ $items := where (.items | default slice) "enabled" "ne" false }}
+      {{ if and (ne .enabled false) (gt (len $items) 0) }}
+      <section class="about-section">
+        <h2 id="{{ .id | default (.title | anchorize) }}">{{ .title }}</h2>
+        {{ range $items }}<div class="about-item">
+          <h3>{{ .title }}</h3>
+          {{ with .meta }}<p class="muted">{{ . }}</p>{{ end }}
+          {{ with .description }}<div class="prose">{{ . | markdownify }}</div>{{ end }}
+          {{ with .date }}<span class="muted">{{ . }}</span>{{ end }}
+          {{ with .links }}<div class="about-links">{{ range . }}{{ if .url }}<a href="{{ partial "url.html" .url }}">{{ .label }}</a>{{ end }}{{ end }}</div>{{ end }}
+        </div>{{ end }}
+      </section>
+      {{ end }}
+    {{ end }}
+  </article>
+  <aside class="about-aside">
+    {{ with .Params.photo }}{{ if and (ne .enabled false) .src }}<img class="profile-photo" src="{{ partial "url.html" .src }}" alt="{{ .alt | default "Portrait" }}">{{ end }}{{ end }}
+    {{ partial "social-links.html" .Params.socials }}
+  </aside>
+</main>
+{{ end }}

@@ -1,0 +1,24 @@
+{{ define "main" }}
+<main id="main" class="content-grid">
+  <article class="doc about-doc">
+    <h1>About me</h1>
+    <div class="about-identity">
+      <div class="about-media">
+        {{ with .Params.photo }}{{ if and (ne .enabled false) .src }}<img src="{{ partial "url.html" .src }}" alt="{{ .alt | default "Portrait" }}">{{ end }}{{ end }}
+        {{ partial "social-links.html" .Params.socials }}
+      </div>
+      <div><h2>{{ .Params.name | default site.Title }}</h2><div class="prose">{{ .Content }}</div></div>
+    </div>
+    {{ range .Params.sections }}
+      {{ $items := where (.items | default slice) "enabled" "ne" false }}
+      {{ if and (ne .enabled false) (gt (len $items) 0) }}
+      <section id="{{ .id | default (.title | anchorize) }}" class="about-section">
+        <h2>{{ .title }}</h2>
+        {{ range $items }}<div class="about-item"><h3>{{ .title }}</h3>{{ with .meta }}<p class="muted">{{ . }}</p>{{ end }}{{ with .description }}<div class="prose">{{ . | markdownify }}</div>{{ end }}{{ with .date }}<span class="muted">{{ . }}</span>{{ end }}{{ with .links }}<div class="about-links">{{ range . }}{{ if .url }}<a href="{{ partial "url.html" .url }}">{{ .label }}</a>{{ end }}{{ end }}</div>{{ end }}</div>{{ end }}
+      </section>
+      {{ end }}
+    {{ end }}
+  </article>
+  <aside class="right-pane"><h2>On this page</h2><nav aria-label="On this page"><a href="#profile-links-title">Links</a>{{ range .Params.sections }}{{ if ne .enabled false }}<a href="#{{ .id | default (.title | anchorize) }}">{{ .title }}</a>{{ end }}{{ end }}</nav></aside>
+</main>
+{{ end }}

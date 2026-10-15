@@ -1,13 +1,17 @@
 baseURL = 'https://federico-zanca.github.io/'
 locale = 'en-us'
 title = 'Federico Zanca'
-theme = 'research'
+theme = 'forge'
 enableRobotsTXT = true
 
 [params]
+  header_name = 'amuro'
   description = 'Notes on systems, security, and kernel internals.'
+  # Select the forge theme colors; see README.md for all palettes.
+  forge_palette = 'mono'
+  # These options apply to the original research theme only.
   article_style = 'reader'
-  palette = 'ice'
+#palette = 'ember'
   fonts = 'auto'
   sidebar = true
   toc = true

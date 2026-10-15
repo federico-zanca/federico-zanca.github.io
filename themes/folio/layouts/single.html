@@ -1,0 +1,15 @@
+{{ define "main" }}
+{{ $headings := .Fragments.Headings }}
+{{ if eq (len $headings) 1 }}
+  {{ $root := index $headings 0 }}
+  {{ if or (eq $root.Level 1) (not $root.ID) }}{{ $headings = $root.Headings }}{{ end }}
+{{ end }}
+<main id="main" class="content-grid">
+  <article class="doc article">
+    {{ if .Title }}<h1>{{ .Title }}</h1>{{ end }}
+    {{ if or (gt .Date.Year 1900) (eq .Section "writeups") }}<div class="article-meta">{{ if gt .Date.Year 1900 }}<time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>{{ end }}{{ if eq .Section "writeups" }}{{ if gt .Date.Year 1900 }}<span aria-hidden="true">·</span>{{ end }}<a href="{{ "writeups/" | relURL }}">Writeup</a>{{ end }}</div>{{ end }}
+    <div class="prose">{{ .Content }}</div>
+  </article>
+  {{ if and (ne (.Param "toc") false) (gt (len $headings) 0) }}<aside class="right-pane"><h2>On this page</h2><nav class="toc" aria-label="On this page">{{ partial "toc.html" (dict "headings" $headings) }}</nav></aside>{{ end }}
+</main>
+{{ end }}

@@ -1,0 +1,1 @@
+{{ define "main" }}<main id="main" class="page-panel"><h1>{{ .Title | default (title .Section) }}</h1>{{ with .Content }}<div class="prose">{{ . }}</div>{{ end }}{{ partial "entries.html" (dict "pages" .Pages) }}</main>{{ end }}

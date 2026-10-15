@@ -1,0 +1,39 @@
+{{ define "main" }}
+{{ $headings := .Fragments.Headings }}
+{{ if eq (len $headings) 1 }}
+  {{ $root := index $headings 0 }}
+  {{ if or (eq $root.Level 1) (not $root.ID) }}{{ $headings = $root.Headings }}{{ end }}
+{{ end }}
+{{ $showSubsections := true }}
+{{ if isset .Params "toc_subsections" }}{{ $showSubsections = .Params.toc_subsections }}{{ end }}
+<main id="main" class="article-grid">
+  {{ if .Title }}<header class="terminal-panel article-heading"><h1>{{ .Title }}</h1></header>{{ end }}
+  <aside class="article-aside">
+    {{ with .Description }}<p class="aside-description">{{ . }}</p>{{ end }}
+    {{ if gt .Date.Year 1900 }}<div class="aside-meta"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time></div>{{ end }}
+    <div class="palette-picker">
+      <label for="palette-select">Palette</label>
+      <select id="palette-select">
+        <option value="default">Site default</option>
+        <option value="cinder">Cinder</option>
+        <option value="cinder-rust">Cinder Rust</option>
+        <option value="cinder-ice">Cinder Ice</option>
+        <option value="cinder-petrol">Cinder Petrol</option>
+        <option value="paper">Paper</option>
+        <option value="mono">Mono</option>
+        <option value="wine">Wine</option>
+        <option value="rust">Rust</option>
+        <option value="noir">Noir</option>
+        <option value="noir-crimson">Noir Crimson</option>
+        <option value="noir-oxblood">Noir Oxblood</option>
+        <option value="graphite">Graphite</option>
+      </select>
+    </div>
+    {{ if and (ne (.Param "toc") false) (gt (len $headings) 0) }}<nav class="toc" aria-label="On this page"><h2>On this page</h2>{{ partial "toc.html" (dict "headings" $headings "showSubsections" $showSubsections) }}</nav>{{ end }}
+    {{ with .Params.artifacts }}<section class="aside-links artifact-list"><h2>Artifacts</h2>{{ range . }}<a class="artifact-link" href="{{ partial "url.html" .url }}"><span class="artifact-name"><svg class="artifact-file-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2.75h8l4 4V21.25H6z"/><path d="M14 2.75v4h4"/></svg>{{ .label }}</span><span class="download-mark" aria-hidden="true">↓</span></a>{{ end }}</section>{{ end }}
+  </aside>
+  <article class="terminal-panel article{{ if not .Title }} article-no-heading{{ end }}">
+    <div class="prose">{{ .Content }}</div>
+  </article>
+</main>
+{{ end }}

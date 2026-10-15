@@ -5,7 +5,7 @@
 <main id="main" class="article-shell{{ if not $rail }} no-sidebar{{ end }}{{ if eq (.Param "numbered") false }} unnumbered{{ end }}">
   <article class="article">
     <header class="article-header">
-      <div class="meta"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time><span>{{ .ReadingTime }} min read</span>{{ range .GetTerms "tags" }}<a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>{{ end }}</div>
+      <div class="meta"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>{{ range .GetTerms "tags" }}<a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>{{ end }}</div>
       <h1>{{ .Title }}</h1>
       {{ with .Description }}<p class="deck">{{ . }}</p>{{ end }}
     </header>
