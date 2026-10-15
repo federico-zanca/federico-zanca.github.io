@@ -773,7 +773,7 @@ def attempt():
         r.sendline(b"8")
         r.recvuntil(b"What a waste of food... shame on you!")
         r.sendline(b"echo 'john cena'")
-        if b"SHELL_READY" in r.recvuntil(b"john cena", timeout=1):
+        if b"john cena" in r.recvuntil(b"john cena", timeout=1):
             return r 
     except EOFError:
         pass
