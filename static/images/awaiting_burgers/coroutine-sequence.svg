@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 455" role="img" aria-labelledby="title desc">
+  <title id="title">A coroutine suspended and resumed by its caller</title>
+  <desc id="desc">The caller creates a lazy-start coroutine and receives a Task. The caller resumes it; the coroutine reaches co_await suspend_always and returns control. The caller resumes it a second time. It reaches final suspension, after which the caller destroys it.</desc>
+  <defs>
+    <marker id="arrow-teal" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 8 4 0 8Z" fill="#9ed4c7"/></marker>
+    <marker id="arrow-amber" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 8 4 0 8Z" fill="#e8b28d"/></marker>
+  </defs>
+  <rect width="760" height="455" fill="#1d252c"/>
+  <g font-family="Arial,Helvetica,sans-serif" font-size="15" text-anchor="middle">
+    <rect x="88" y="16" width="156" height="38" rx="5" fill="#2d3941" stroke="#60727b"/>
+    <rect x="516" y="16" width="156" height="38" rx="5" fill="#2d3941" stroke="#60727b"/>
+    <g fill="#f0efec" dominant-baseline="middle">
+      <text x="166" y="35">Caller</text>
+      <text x="594" y="35">Coroutine</text>
+    </g>
+  </g>
+  <g fill="none" stroke-width="3" stroke-linecap="round">
+    <path d="M166 58V90 M166 138V197 M166 256V315 M166 373V423" stroke="#9ed4c7"/>
+    <path d="M594 90V138 M594 197V256 M594 315V373 M594 423V438" stroke="#e8b28d"/>
+  </g>
+  <g fill="none" stroke-width="2" stroke-linecap="round">
+    <path d="M171 90H586" stroke="#9ed4c7" marker-end="url(#arrow-teal)"/>
+    <path d="M589 138H174" stroke="#e8b28d" marker-end="url(#arrow-amber)"/>
+    <path d="M171 197H586" stroke="#9ed4c7" marker-end="url(#arrow-teal)"/>
+    <path d="M589 256H174" stroke="#e8b28d" marker-end="url(#arrow-amber)"/>
+    <path d="M171 315H586" stroke="#9ed4c7" marker-end="url(#arrow-teal)"/>
+    <path d="M589 373H174" stroke="#e8b28d" marker-end="url(#arrow-amber)"/>
+    <path d="M171 423H586" stroke="#9ed4c7" marker-end="url(#arrow-teal)"/>
+  </g>
+  <g font-family="Arial,Helvetica,sans-serif" font-size="14" text-anchor="middle">
+    <g fill="#c7e6df">
+      <text x="380" y="81">work(): create Task</text>
+      <text x="380" y="188">resume()</text>
+      <text x="380" y="306">resume() again</text>
+      <text x="380" y="414">destroy()</text>
+    </g>
+    <g fill="#f0c9aa">
+      <text x="380" y="129">initial_suspend(): return Task</text>
+      <text x="380" y="247">co_await: suspend</text>
+      <text x="380" y="364">final_suspend(): completed</text>
+    </g>
+  </g>
+</svg>
